@@ -12,9 +12,7 @@ import Store from '../../store/store'
       hasUserInfo: false,
       canIUse: wx.canIUse('button.open-type.getUserInfo')
     },
-    globalData:{
-      test:'1234567'
-    },
+    globalData:['test'],
     //事件处理函数
     bindViewTap: function() {
       

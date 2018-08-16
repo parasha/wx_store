@@ -31,6 +31,7 @@ Store.createPage({
 ~~~
 
 2.2 创建 Component 组件
+> 组件部分有问题！！！
 ~~~JavaScript
 import Store from '../store/store'
 Store.createComponent({

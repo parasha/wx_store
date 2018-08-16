@@ -1,2 +1,1 @@
-<!--Component/index.wxml-->
-<text>Component/index.wxml</text>
+<text bindtap='change'>{{test}}</text>

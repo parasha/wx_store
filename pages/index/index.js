@@ -1,5 +1,3 @@
-//index.js
-//获取应用实例
 const app = getApp()
 
 import Store from '../../store/store'
@@ -25,8 +23,6 @@ import Store from '../../store/store'
       },1000)
     },
     onLoad: function () {
-      console.log('Page Init')
-
       if (app.globalData.userInfo) {
         this.setData({
           userInfo: app.globalData.userInfo,

@@ -1,2 +1,2 @@
-<!--pages/new/index.wxml-->
+
 <text>{{test}}</text>

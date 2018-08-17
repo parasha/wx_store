@@ -4,7 +4,9 @@ Store.createComponent({
    * 组件的属性列表
    */
   properties: {
-
+    test:{
+      type:String
+    }
   },
 
   /**
@@ -13,7 +15,6 @@ Store.createComponent({
   data: {
 
   },
-  globalData:['test'],
   attached:function(){
     console.log('page:',this.page)  
   },

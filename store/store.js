@@ -31,7 +31,6 @@ const store = {
         //保存 store 
         const _this = this;
 
-        const globalData = params.globalData || [];
         const attached = params.attached || function(){};
         const onReady = params.ready || function () {};
 
@@ -41,22 +40,13 @@ const store = {
             this.page = allPages[allPages.length-1]
             // 向页面中添加一个 setGlobalData 方法
             this.setGlobalData = function (data){
-                const store_page = this; 
-                for (let key in data) {
-                    this.store[key] = data[key]
-                    this.store.callback[key] 
-                }
-                this.setData({ ...data})
+                this.page.setGlobalData(data)
             }
             //把 store 加入到页面中
             this.store = _this;
             attached.call(this)
         }
 
-        params.ready = function () {
-            this.setData(globalDataRefresh(globalData,_this))
-            onReady.call(this)
-        }
         Component(params)
 
     }

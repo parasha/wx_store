@@ -1,4 +1,4 @@
-## 微信小程序的状态管理
+## 微信小程序的全局变量控制
 
 ### 1. 概要
 在页面内增加了一个 setGlobalData 方法
@@ -31,8 +31,22 @@ Store.createPage({
 ~~~
 
 2.2 创建 Component 组件
-> 组件部分有问题！！！
-组件部分的实现有问题，暂时不能用
+组件没有 globalData 属性，内部需要使用的globalData 依然要以标签属性的形式传进来
+调用 setGlobalData 时实际是调用父页面 page 上的 setGlobalData
+~~~JavaScript
+import Store from '../store/store'
+Store.createComponent({
+  properties: {
+
+  },
+  data: {
+
+  },
+  methods: {
+
+  }
+})
+~~~
 
 2.3 修改globalData
 ~~~javascript
@@ -40,4 +54,4 @@ Store.createPage({
 ~~~
 
 ### 3. 各种问题
-施工中...
+还没有详细的测试，可能会出现各种不可用的问题

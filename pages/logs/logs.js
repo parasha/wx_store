@@ -9,6 +9,7 @@ Store.createPage({
   data: {
     logs: []
   },
+  globalData:['test'],
   onLoad: function () {
 
   },

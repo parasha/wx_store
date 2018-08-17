@@ -32,21 +32,7 @@ Store.createPage({
 
 2.2 创建 Component 组件
 > 组件部分有问题！！！
-~~~JavaScript
-import Store from '../store/store'
-Store.createComponent({
-  properties: {
-
-  },
-  data: {
-
-  },
-  globalData:['test'],
-  methods: {
-
-  }
-})
-~~~
+组件部分的实现有问题，暂时不能用
 
 2.3 修改globalData
 ~~~javascript

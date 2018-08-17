@@ -1,4 +1,5 @@
 const store = {
+    callback:{},
     createPage(params) {
         //保存 store 
         const _this = this;
@@ -39,7 +40,14 @@ const store = {
             const allPages = getCurrentPages()
             this.page = allPages[allPages.length-1]
             // 向页面中添加一个 setGlobalData 方法
-            this.setGlobalData = setGlobalData;
+            this.setGlobalData = function (data){
+                const store_page = this; 
+                for (let key in data) {
+                    this.store[key] = data[key]
+                    this.store.callback[key] 
+                }
+                this.setData({ ...data})
+            }
             //把 store 加入到页面中
             this.store = _this;
             attached.call(this)

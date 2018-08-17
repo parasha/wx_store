@@ -42,13 +42,14 @@ const store = {
             this.setGlobalData = function (data){
                 this.page.setGlobalData(data)
             }
+            this.setPageData = function(data){
+                this.page.setData(data)
+            }
             //把 store 加入到页面中
             this.store = _this;
             attached.call(this)
         }
-
         Component(params)
-
     }
 }
 

@@ -33,6 +33,7 @@ Store.createPage({
 2.2 创建 Component 组件
 组件没有 globalData 属性，内部需要使用的globalData 依然要以标签属性的形式传进来
 调用 setGlobalData 时实际是调用父页面 page 上的 setGlobalData
+另外添加了一个 setPageDate 方法，直接修改 page 的 data
 ~~~JavaScript
 import Store from '../store/store'
 Store.createComponent({

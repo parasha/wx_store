@@ -10,5 +10,4 @@
   <view class="usermotto">
     <text class="user-motto"></text>
   </view>
-  <test test='{{test}}'></test>
 </view>

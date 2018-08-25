@@ -1,25 +1,34 @@
 const store = {
     callback:{},
-    createPage(params) {
+    /**
+     * 
+     * @param {String} name 当前页面的唯一标识，用来区分全局变量的回调
+     * @param {Object} params 
+     */
+    createPage(name,params) {
         //保存 store 
         const _this = this;
         // 小程序页面的原始参数
         const globalData = params.globalData || [];
         const onLoad = params.onLoad || function () {};
-        const onShow = params.onShow || function () {};
+        const onUnload = params.onUnload || function () {};
 
 
         params.onLoad = function (options) {
-            // 向页面中添加一个 setGlobalData 方法
-            this.setGlobalData = setGlobalData;
             //把 store 加入到页面中
             this.store = _this;
+            this.name = name;
+            globalDataRefresh(globalData,this,_this)  
+            
+            // 向页面中添加一个 setGlobalData 方法
+            this.setGlobalData = setGlobalData;        
 
             onLoad.call(this, options)
         }
-        params.onShow = function () {
-            this.setData(globalDataRefresh(globalData,_this))            
-            onShow.call(this)
+        params.onUnload = function(){
+            delete this.store.callback[this.name]
+
+            onUnload.call(this)
         }
         //页面初始化
         Page(params)
@@ -54,20 +63,37 @@ const store = {
 }
 
 function setGlobalData (data){
+    const store = this.store;
     for (let key in data) {
-        this.store[key] = data[key]
+        store[key] = data[key]
     }
+    store.callback.forEach(element=>{
+        let obj = {}
+        element.list.forEach(value => {
+            obj[value] = store[value]
+        });
+        element.setData(obj);
+    })
     this.setData({ ...data})
 }
 //每次调用 onShow 的时候更新需要的 globalData
-function globalDataRefresh(globalData,store){
+/**
+ * 
+ * @param {Object} globalData data对象
+ * @param {Object} page 当前的 page 对象
+ * @param {Object} store store 对象
+ */
+function globalDataRefresh(globalData,page,store){
+    //页面 load 时，从 store 中获取需要的globalData
     let obj = {}
     globalData.forEach(element => {
         if (store[element]) {
             obj[element] = store[element]
         }
     });
-    return {...obj};
+    page.setData(obj);
+    // 保存一个 page 对象
+    store.callback[page.name] = {list:globalData,page:page}
 }
 
 export default store

@@ -41,7 +41,6 @@ const store = {
         const _this = this;
 
         const attached = params.attached || function(){};
-        const onReady = params.ready || function () {};
 
         params.attached = function(){
             // 获取父页面

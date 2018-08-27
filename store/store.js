@@ -48,11 +48,11 @@ const store = {
             const allPages = getCurrentPages()
             this.page = allPages[allPages.length-1]
             // 向页面中添加一个 setGlobalData 方法
-            this.setGlobalData = function (data){
-                this.page.setGlobalData(data)
+            this.setGlobalData = function (data,fn){
+                this.page.setGlobalData(data,fn)
             }
-            this.setPageData = function(data){
-                this.page.setData(data)
+            this.setPageData = function(data,fn){
+                this.page.setData(data,fn)
             }
             //把 store 加入到页面中
             this.store = _this;
@@ -62,19 +62,21 @@ const store = {
     }
 }
 
-function setGlobalData (data){
+function setGlobalData (data,fn){
     const store = this.store;
     for (let key in data) {
         store[key] = data[key]
     }
-    store.callback.forEach(element=>{
+    console.log(store)
+    for (const key in store.callback) {
+        const element = store.callback[key];
         let obj = {}
         element.list.forEach(value => {
             obj[value] = store[value]
         });
-        element.setData(obj);
-    })
-    this.setData({ ...data})
+        element.page.setData(obj);
+    }
+    this.setData({ ...data},fn)
 }
 //每次调用 onShow 的时候更新需要的 globalData
 /**

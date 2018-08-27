@@ -1,2 +1,6 @@
-<!--pages/second/index.wxml-->
-<text>pages/second/index.wxml</text>
+
+<text>{{text}}</text>
+
+<button bindtap='change'>
+  上一页
+</button>

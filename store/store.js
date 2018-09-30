@@ -58,6 +58,22 @@ const store = {
             attached.call(this)
         }
         Component(params)
+    },
+    /**
+     * 独立在页面外的，globalData 修改方法
+     */
+    setGlobalData_nopage(data){
+        for (let key in data) {
+            this[key] = data[key]
+        }
+        for (const key in this.callback) {
+            const element = this.callback[key];
+            let obj = {}
+            element.list.forEach(value => {
+                obj[value] = data[value]
+            });
+            element.page.setData(obj);
+        }
     }
 }
 
@@ -66,7 +82,6 @@ function setGlobalData (data,fn){
     for (let key in data) {
         store[key] = data[key]
     }
-    console.log(store)
     for (const key in store.callback) {
         const element = store.callback[key];
         let obj = {}

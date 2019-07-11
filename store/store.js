@@ -2,42 +2,49 @@ import getValue from './getValue';
 
 class Store {
   state = {};
-  deps = {
-    page: [],
-    component: []
-  };
+  deps = [];
   constructor(globalData) {
     this.init(globalData);
   }
 
   init(globalData) {
-    
+
     this.state = globalData;
     const store = this;
     const _$state = this.state;
     const _Page = Page;
-    const _Component = Component;
+    
     Page = function (config) {
-      const { data, onLoad } = config;
-      Page.onLoad = function (e) {
-        this.data = Object.assign({}, data, _$state);
-        onLoad(e)
+      const { onLoad } = config;
+      config.onLoad = function (e) {
+        this.setData({ store: _$state });
+        store.addDepend(this);
+        onLoad && onLoad(e)
       }
-      this.setGlobalData = 
-      store.addDepend('page',this);
+      config.setGlobalData = store.setGlobalData.bind(store);
       _Page(config)
     }
-
   }
+
   // 向 store 中增加依赖
-  addDepend(type, page) {
-    if(this.deps[types].indexOf(page) > -1){
+  addDepend(page) {
+    if (this.deps.indexOf(page) > -1) {
       return;
     }
-    this.deps[type].push(page)
+    this.deps.push(page)
   }
   // 修改 globalData 
-  setGlobalData(key,value){
-    
+  setGlobalData(obj) {
+    const changeData = {};
+    const keys = Object.keys(obj);
+    keys.forEach(k=>{
+      changeData[`store.${k}`] = obj[k]
+    })
+    this.deps.forEach(page => {
+      page.setData(changeData)
+    })
   }
+
 }
+
+export default Store

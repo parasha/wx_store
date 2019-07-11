@@ -1,6 +1,0 @@
-
-<text>{{text}}</text>
-
-<button bindtap='change'>
-  下一页
-</button>

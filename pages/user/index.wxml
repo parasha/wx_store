@@ -1,0 +1,2 @@
+<text>{{store.testNum}}</text>
+<button bindtap='add'> +1 </button>

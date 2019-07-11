@@ -1,3 +1,4 @@
 <!--pages/home/index.wxml-->
-<text>{{store.testNum}}</text>
+<text>Home:{{store.testNum}}</text>
 <navigator url='/pages/user/index'>下一页</navigator>
+<test></test>

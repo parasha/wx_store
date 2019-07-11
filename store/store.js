@@ -13,16 +13,31 @@ class Store {
     const store = this;
     const _$state = this.state;
     const _Page = Page;
-    
+    const _Component = Component;
+
     Page = function (config) {
       const { onLoad } = config;
+      /* 在 onload 时将 state 挂载到 data 上 */
       config.onLoad = function (e) {
         this.setData({ store: _$state });
         store.addDepend(this);
         onLoad && onLoad(e)
       }
-      config.setGlobalData = store.setGlobalData.bind(store);
+      config.setStoreData = store.setStoreData.bind(store);
       _Page(config)
+    }
+
+    Component = function (config) {
+      const { attached } = config;
+      /* 在 created 时将 state 挂载到 data 上 */
+      config.attached = function (e) {
+        this.setData({ store: _$state });
+        console.log(this.data)
+        store.addDepend(this);
+        attached && attached(e)
+      }
+      config.methods.setStoreData = store.setStoreData.bind(store);
+      _Component(config);
     }
   }
 
@@ -34,10 +49,10 @@ class Store {
     this.deps.push(page)
   }
   // 修改 globalData 
-  setGlobalData(obj) {
+  setStoreData(obj) {
     const changeData = {};
     const keys = Object.keys(obj);
-    keys.forEach(k=>{
+    keys.forEach(k => {
       changeData[`store.${k}`] = obj[k]
     })
     this.deps.forEach(page => {

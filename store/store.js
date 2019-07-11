@@ -1,5 +1,3 @@
-import getValue from './getValue';
-
 class Store {
   state = {};
   deps = [];
@@ -16,25 +14,34 @@ class Store {
     const _Component = Component;
 
     Page = function (config) {
-      const { onLoad } = config;
+      const { onLoad, onUnload } = config;
       /* 在 onload 时将 state 挂载到 data 上 */
       config.onLoad = function (e) {
         this.setData({ store: _$state });
         store.addDepend(this);
         onLoad && onLoad(e)
       }
+      // 组件销毁时移出依赖
+      config.onUnload = function (e) {
+        store.deleteDepend(this);
+        onUnload && onUnload(e)
+      }
       config.setStoreData = store.setStoreData.bind(store);
       _Page(config)
     }
 
     Component = function (config) {
-      const { attached } = config;
+      const { attached, detached } = config;
       /* 在 created 时将 state 挂载到 data 上 */
       config.attached = function (e) {
         this.setData({ store: _$state });
-        console.log(this.data)
         store.addDepend(this);
         attached && attached(e)
+      }
+      // 组件销毁时移出依赖
+      config.detached = function (e) {
+        store.deleteDepend(this);
+        detached && detached(e)
       }
       config.methods.setStoreData = store.setStoreData.bind(store);
       _Component(config);
@@ -47,6 +54,13 @@ class Store {
       return;
     }
     this.deps.push(page)
+  }
+  deleteDepend(page) {
+    const index = this.deps.indexOf(page)
+    if (index == -1) {
+      return;
+    }
+    this.deps.splice(index, 1)
   }
   // 修改 globalData 
   setStoreData(obj) {

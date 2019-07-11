@@ -1,3 +1,5 @@
+import getValue from './utils/getValue';
+import { isObject } from './utils/index';
 class Store {
   state = {};
   deps = [];
@@ -8,13 +10,13 @@ class Store {
   init(globalData) {
 
     this.state = globalData;
-    const store = this;
     const _$state = this.state;
-    const _Page = Page;
-    const _Component = Component;
+    stateObserve(_$state);
+    const store = this;
 
+    const _Page = Page;
     Page = function (config) {
-      const { onLoad, onUnload } = config;
+      const { onLoad, onUnload, inject } = config;
       /* 在 onload 时将 state 挂载到 data 上 */
       config.onLoad = function (e) {
         this.setData({ store: _$state });
@@ -29,7 +31,7 @@ class Store {
       config.setStoreData = store.setStoreData.bind(store);
       _Page(config)
     }
-
+    const _Component = Component;
     Component = function (config) {
       const { attached, detached } = config;
       /* 在 created 时将 state 挂载到 data 上 */
@@ -74,6 +76,31 @@ class Store {
     })
   }
 
+}
+
+function stateObserve(state) {
+  const keys = Object.keys(state);
+  keys.forEach(key => {
+    let value = state[key];
+    if (isObject(value)) {
+      stateObserve(value)
+    }
+    defineDepend(state, key, value);
+  })
+}
+
+function defineDepend(obj, key, value) {
+  Object.defineProperty(obj, key, {
+    enumerable: true,
+    configurable: true,
+    get: function () {
+      return value;
+    },
+    set: function (newValue) {
+      console.log('set')
+      value = newValue;
+    },
+  })
 }
 
 export default Store

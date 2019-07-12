@@ -1,4 +1,4 @@
-import getValue from './utils/getValue';
+
 import { isObject } from './utils/index';
 class Store {
   state = {};
@@ -31,23 +31,23 @@ class Store {
       config.setStoreData = store.setStoreData.bind(store);
       _Page(config)
     }
-    const _Component = Component;
-    Component = function (config) {
-      const { attached, detached } = config;
-      /* 在 created 时将 state 挂载到 data 上 */
-      config.attached = function (e) {
-        this.setData({ store: _$state });
-        store.addDepend(this);
-        attached && attached(e)
-      }
-      // 组件销毁时移出依赖
-      config.detached = function (e) {
-        store.deleteDepend(this);
-        detached && detached(e)
-      }
-      config.methods.setStoreData = store.setStoreData.bind(store);
-      _Component(config);
-    }
+    // const _Component = Component;
+    // Component = function (config) {
+    //   const { attached, detached } = config;
+    //   /* 在 created 时将 state 挂载到 data 上 */
+    //   config.attached = function (e) {
+    //     this.setData({ store: _$state });
+    //     store.addDepend(this);
+    //     attached && attached(e)
+    //   }
+    //   // 组件销毁时移出依赖
+    //   config.detached = function (e) {
+    //     store.deleteDepend(this);
+    //     detached && detached(e)
+    //   }
+    //   config.methods.setStoreData = store.setStoreData.bind(store);
+    //   _Component(config);
+    // }
   }
 
   // 向 store 中增加依赖
@@ -90,6 +90,7 @@ function stateObserve(state) {
 }
 
 function defineDepend(obj, key, value) {
+  const dep = new dep();
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,

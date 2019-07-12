@@ -2,7 +2,7 @@
 Page({
   add:function(){
     this.setStoreData({
-      testNum: 2
+      'obj.arr[0]': 2
     })
   }
 })

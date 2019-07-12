@@ -19,7 +19,7 @@ class Store {
       config.onLoad = function (e) {
         this.setData({ store: _$state });
         store.addDepend(this);
-        onLoad && onLoad(e)
+        onLoad && onLoad.call(this,e)
       }
       // 组件销毁时移出依赖
       config.onUnload = function (e) {
@@ -41,7 +41,7 @@ class Store {
       // 组件销毁时移出依赖
       config.detached = function (e) {
         store.deleteDepend(this);
-        detached && detached(e)
+        detached && detached.call(this,e)
       }
       config.methods.setStoreData = store.setStoreData.bind(store);
       _Component(config);
@@ -70,9 +70,14 @@ class Store {
       changeData[`store.${k}`] = obj[k]
     })
     this.deps.forEach(page => {
-      page.setData(changeData)
+      // const data = checkDepend(page, changeData)
+      // data && 
+      page.setData(data);
     })
   }
+}
+
+function checkDepend(page,changeData){
 
 }
 

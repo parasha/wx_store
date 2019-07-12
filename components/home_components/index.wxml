@@ -1,1 +1,1 @@
-<text>component:{{store.testNum}}</text>
+<text>component:{{store.obj.arr[0]}}</text>
